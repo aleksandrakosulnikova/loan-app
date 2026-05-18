@@ -15,6 +15,7 @@ export class LoanPage {
     readonly applyForLoanSecondBtn: Button;
     readonly loginModal: LoginModal;
     readonly errorMessage: Locator;
+    readonly monthlyPayment: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -25,6 +26,7 @@ export class LoanPage {
         this.applyForLoanSecondBtn = new Button(page.getByTestId('id-image-element-button-image-2'));
         this.loginModal = new LoginModal(page)
         this.errorMessage = page.getByTestId('id-small-loan-calculator-field-error');
+        this.monthlyPayment = page.getByTestId('ib-small-loan-calculator-field-monthlyPayment');
     }
 
     async open() {
@@ -53,5 +55,9 @@ export class LoanPage {
 
     async checkErrorMessage(visible: boolean): Promise<void> {
         await expect(this.errorMessage).toBeVisible({visible})
+    }
+
+    async checkMonthlyPayment(amount: string): Promise<void> {
+        expect((await this.monthlyPayment.innerText()).split(' ')[0]).toBe(amount);
     }
 }
